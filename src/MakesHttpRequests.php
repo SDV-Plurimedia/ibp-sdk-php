@@ -104,6 +104,56 @@ trait MakesHttpRequests
     }
 
     /**
+     * Make a POST request for uploading content to IBP servers.
+     *
+     * @param  string $uri
+     * @param  string $fileContent
+     * @param  string $fileName
+     * @param  array $payload
+     * @return mixed
+     */
+    private function uploadFromContent($uri, $fileContent, $fileName, array $payload = [])
+    {
+        $params = [
+            'headers' => [
+                'X-Application-Id' => $this->applicationId,
+                'Authorization' => 'Bearer '.$this->uploadToken,
+                'Accept' => 'application/json',
+            ],
+            'multipart' => [
+                [
+                    'name' => 'file',
+                    'contents' => $fileContent,
+                    'filename' => $fileName
+                ]
+            ],
+        ];
+
+        if (!empty($payload)) {
+            $additionnalData = [];
+            foreach ($payload as $key => $value) {
+                $additionnalData[] = [
+                    'name' => $key,
+                    'contents' => $value,
+                ];
+            }
+            $params['multipart'] = array_merge($additionnalData, $params['multipart']);
+        }
+
+        $response = $this->client->request('POST', $uri, $params);
+
+        $statusCode = $response->getStatusCode();
+
+        if (!in_array($statusCode, [200, 201])) {
+            return $this->handleRequestError($response);
+        }
+
+        $responseBody = (string) $response->getBody();
+
+        return json_decode($responseBody, true) ?: $responseBody;
+    }
+
+    /**
      * Make request to Forge servers and return the response.
      *
      * @param  string $verb
