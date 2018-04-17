@@ -53,6 +53,22 @@ trait ManagesFiles
     }
 
     /**
+     * Ajoute des données extras (externes) dans un file
+     *
+     * @param  string $fileId  L'identifiant du file.
+     * @param  array $data Les données à ajouter ou mettre à jour
+     * @return File
+     */
+    public function putExtras($fileId, $data)
+    {
+        $payload = [
+            'extra' => $data,
+        ];
+
+        return new File($this->put("files/$fileId/extras", $payload)['data']);
+    }
+
+    /**
      * Ajoute ou met à jour une méthode sur un file.
      *
      * @param  string $fileId  L'id du file.
