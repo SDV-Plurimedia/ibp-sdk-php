@@ -79,7 +79,17 @@ $token = $ibp
 $token = $ibp
     ->setApplicationId('app_id')
     ->setApplicationSecret('app_secret')
-    ->applicationToken('https://ibp.xxx.fr');
+    ->applicationToken();
+```
+
+Il est possible de passer un paramètre pour configurer la durée de vie du token (en seconde)
+
+```
+Le token sera utilisable pendant 2 minutes (120 secondes)
+$token = $ibp
+    ->setApplicationId('app_id')
+    ->setApplicationSecret('app_secret')
+    ->applicationToken(120);
 ```
 
 ### Folders
