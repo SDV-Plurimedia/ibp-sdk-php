@@ -70,8 +70,19 @@ $ibp->setUploadToken('UPLOAD-TOKEN-HERE');
 $token = $ibp
     ->setApplicationId('app_id')
     ->setApplicationSecret('app_secret')
-    ->uploadToken('john.doe@example.com', 'https://ibp.xxx.fr');
+    ->uploadToken('john.doe@example.com');
 ```
+
+Il est possible de passer un paramètre pour configurer la durée de vie du token (en seconde)
+
+```
+// Le token sera utilisable pendant 2 minutes (120 secondes)
+$token = $ibp
+    ->setApplicationId('app_id')
+    ->setApplicationSecret('app_secret')
+    ->uploadToken('john.doe@example.com', 120);
+```
+
 
 ### Générer un application token
 
@@ -85,7 +96,7 @@ $token = $ibp
 Il est possible de passer un paramètre pour configurer la durée de vie du token (en seconde)
 
 ```
-Le token sera utilisable pendant 2 minutes (120 secondes)
+// Le token sera utilisable pendant 2 minutes (120 secondes)
 $token = $ibp
     ->setApplicationId('app_id')
     ->setApplicationSecret('app_secret')
