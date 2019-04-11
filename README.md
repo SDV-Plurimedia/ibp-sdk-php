@@ -225,8 +225,9 @@ $methode = $ibp->createMethode([
         'crop_width' => 206,
         'crop_width' => 206,
         'crop_x' => 931,
-        'crop_y' => 274,
+        'crop_y' => 274
     ],
+    'description' => 'Image carré'
 ]);
 ```
 
