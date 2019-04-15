@@ -4,6 +4,7 @@ namespace SdV\Ibp\Actions;
 
 use SdV\Ibp\PaginatedResult;
 use SdV\Ibp\Resources\Folder;
+use SdV\Ibp\Resources\File;
 
 trait ManagesFolders
 {
