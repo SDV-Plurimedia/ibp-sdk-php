@@ -168,6 +168,12 @@ $fileContent = fopen(__DIR__. '/README.md', 'r');
 $file = $ibp->uploadFile($fileContent);
 ```
 
+#### Supprimer un fichier
+
+```
+$ibp->deleteFile('59142cd4a64da6014c769813');
+```
+
 ### Application
 
 #### Récupérer la liste des applications.

@@ -91,4 +91,18 @@ trait ManagesFiles
     {
         return new File($this->delete("files/$fileId/methodes/$context")['data']);
     }
+
+    /**
+     * Supprime un fichier d'IBP
+     * @param string $fileId L'id du fichier que l'on souhaite supprimer
+     * @return boolean
+     */
+    public function deleteFile($fileId)
+    {
+        $payload = [
+            'data' => [$fileId]
+        ];
+        $this->delete('files', $payload);
+        return true;
+    }
 }
