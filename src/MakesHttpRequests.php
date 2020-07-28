@@ -143,10 +143,8 @@ trait MakesHttpRequests
     {
         $title = 'Not a valid json response';
         $data = json_decode((string) $response->getBody(), true);
-        if (!is_null($data) && isset($data['error'])) {
-            if (isset($data['error']['title'])) {
-                $title = "IBP Api Error : " . $data['error']['title'];
-            }
+        if (!is_null($data) && isset($data['error']) && isset($data['error']['title'])) {
+            $title = "IBP Api Error : " . $data['error']['title'];
         }
         $error = $this->toError($data);
         throw new ApiException($title, $error);
