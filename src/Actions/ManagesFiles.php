@@ -2,6 +2,7 @@
 
 namespace SdV\Ibp\Actions;
 
+use SdV\Ibp\PaginatedResult;
 use SdV\Ibp\Resources\File;
 
 trait ManagesFiles
@@ -13,7 +14,12 @@ trait ManagesFiles
      */
     public function files(array $query = [])
     {
-        return $this->mapToCollectionOf(File::class, $this->get('files')['data']);
+        $response = $this->get('files', $query);
+
+        return new PaginatedResult(
+            $this->mapToCollectionOf(File::class, $response['data']),
+            $response['meta']
+        );
     }
 
     /**
@@ -47,6 +53,22 @@ trait ManagesFiles
     }
 
     /**
+     * Ajoute des données extras (externes) dans un file
+     *
+     * @param  string $fileId  L'identifiant du file.
+     * @param  array $data Les données à ajouter ou mettre à jour
+     * @return File
+     */
+    public function putExtras($fileId, $data)
+    {
+        $payload = [
+            'extra' => $data,
+        ];
+
+        return new File($this->put("files/$fileId/extras", $payload)['data']);
+    }
+
+    /**
      * Ajoute ou met à jour une méthode sur un file.
      *
      * @param  string $fileId  L'id du file.
@@ -55,7 +77,7 @@ trait ManagesFiles
      */
     public function upsertMethodeOnFile($fileId, $payload)
     {
-        // return new File($this->put("files/$fileId/methodes", $payload)['data']);
+        return new File($this->put("files/$fileId/methodes", $payload)['data']);
     }
 
     /**
@@ -67,6 +89,20 @@ trait ManagesFiles
      */
     public function deleteMethodeFromFile($fileId, $context)
     {
-        // return new File($this->delete("files/$fileId/remove/$context")['data']);
+        return new File($this->delete("files/$fileId/methodes/$context")['data']);
+    }
+
+    /**
+     * Supprime un fichier d'IBP
+     * @param string $fileId L'id du fichier que l'on souhaite supprimer
+     * @return boolean
+     */
+    public function deleteFile($fileId)
+    {
+        $payload = [
+            'data' => [$fileId]
+        ];
+        $this->delete('files', $payload);
+        return true;
     }
 }

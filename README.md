@@ -17,6 +17,12 @@ Work in progress.
 
 ## Installation
 
+Installing via composer
+
+```
+composer require sdv/ibp-sdk-php
+```
+
 ## Usage
 
 ```
@@ -56,6 +62,45 @@ $ibp->setApplicationToken('APPLICATION-TOKEN-HERE');
 
 ```
 $ibp->setUploadToken('UPLOAD-TOKEN-HERE');
+```
+
+### Générer un upload token
+
+```
+$token = $ibp
+    ->setApplicationId('app_id')
+    ->setApplicationSecret('app_secret')
+    ->uploadToken('john.doe@example.com');
+```
+
+Il est possible de passer un paramètre pour configurer la durée de vie du token (en seconde)
+
+```
+// Le token sera utilisable pendant 2 minutes (120 secondes)
+$token = $ibp
+    ->setApplicationId('app_id')
+    ->setApplicationSecret('app_secret')
+    ->uploadToken('john.doe@example.com', 120);
+```
+
+
+### Générer un application token
+
+```
+$token = $ibp
+    ->setApplicationId('app_id')
+    ->setApplicationSecret('app_secret')
+    ->applicationToken();
+```
+
+Il est possible de passer un paramètre pour configurer la durée de vie du token (en seconde)
+
+```
+// Le token sera utilisable pendant 2 minutes (120 secondes)
+$token = $ibp
+    ->setApplicationId('app_id')
+    ->setApplicationSecret('app_secret')
+    ->applicationToken(120);
 ```
 
 ### Folders
@@ -123,6 +168,12 @@ $fileContent = fopen(__DIR__. '/README.md', 'r');
 $file = $ibp->uploadFile($fileContent);
 ```
 
+#### Supprimer un fichier
+
+```
+$ibp->deleteFile('59142cd4a64da6014c769813');
+```
+
 ### Application
 
 #### Récupérer la liste des applications.
@@ -163,6 +214,51 @@ $isDeleted = $ibp->deleteApplication('591d57fe22b60a00e2075f12');
 $methodes = $ibp->methodes();
 ```
 
+#### Récupérer une methode.
+
+```
+$methode = $ibp->methode('5911924f302f600102779d23');
+```
+
+#### Créer une methode.
+
+```
+$methode = $ibp->createMethode([
+    'context' => 'square',
+    'generator' => 'Thumbor',
+    'param' => [
+        'force_ration' => '1:1',
+        'crop_width' => 206,
+        'crop_width' => 206,
+        'crop_x' => 931,
+        'crop_y' => 274
+    ],
+    'description' => 'Image carré'
+]);
+```
+
+#### Mettre à jour les infos d'une application.
+
+```
+$methode = $ibp->updateMethode('591d57fe22b60a00e2075f12', [
+    'context' => 'square',
+    'generator' => 'Thumbor',
+    'param' => [
+        'force_ration' => '1:1',
+        'crop_width' => 206,
+        'crop_width' => 206,
+        'crop_x' => 931,
+        'crop_y' => 274,
+    ],
+]);
+```
+
+#### Supprimer une methode
+
+```
+$isDeleted = $ibp->deleteMethode('591d57fe22b60a00e2075f12');
+```
+
 ### Pipelines
 
 #### Récupérer la liste des pipelines.
@@ -174,5 +270,3 @@ $pipelines = $ibp->pipelines();
 ## Credits
 
 Inspired by The [Forge SDK](https://github.com/themsaid/forge-sdk)
-
-

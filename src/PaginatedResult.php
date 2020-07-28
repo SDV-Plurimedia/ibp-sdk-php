@@ -1,11 +1,18 @@
 <?php
 
 namespace SdV\Ibp;
+use InvalidArgumentException;
 
 class PaginatedResult
 {
+    /**
+     * @var SdV\Ibp\Resource
+     */
     public $items;
 
+    /**
+     * @var array
+     */
     public $meta;
 
     public function __construct($items, $meta)
@@ -17,11 +24,39 @@ class PaginatedResult
     /**
      * Renvoie le numéro de la page courante.
      *
+     * @throws InvalidArgumentException
      * @return int
      */
     public function currentPage()
     {
-        return 1;
+        if (isset($this->meta['offset_pagination'])) {
+            if ($this->meta['offset_pagination']['size']) {
+                throw new InvalidArgumentException('Size cannot be 0');
+            }
+
+            $currentPage = ceil($this->meta['offset_pagination']['from'] / $this->meta['offset_pagination']['size']);
+            if ($currentPage === 0) {
+                return 1;
+            }
+
+            return $currentPage;
+        }
+
+        return $this->meta['pagination']['current_page'];
+    }
+
+    /**
+     * Renvoie le nombre de pages existantes.
+     *
+     * @return int
+     */
+    public function totalPages()
+    {
+        if (isset($this->meta['offset_pagination'])) {
+            return ceil($this->total() / $this->perPage());
+        }
+
+        return $this->meta['pagination']['total_pages'];
     }
 
     /**
@@ -31,7 +66,11 @@ class PaginatedResult
      */
     public function total()
     {
-        return 10;
+        if (isset($this->meta['offset_pagination'])) {
+            return $this->meta['offset_pagination']['total'];
+        }
+
+        return $this->meta['pagination']['total'];
     }
 
     /**
@@ -41,7 +80,11 @@ class PaginatedResult
      */
     public function perPage()
     {
-        return 25;
+        if (isset($this->meta['offset_pagination'])) {
+            return $this->meta['offset_pagination']['size'];
+        }
+
+        return $this->meta['pagination']['per_page'];
     }
 
     /**
@@ -51,7 +94,11 @@ class PaginatedResult
      */
     public function hasNextPage()
     {
-        return true;
+        if (isset($this->meta['offset_pagination'])) {
+            return $this->currentPage() < $this->totalPages();
+        }
+
+        return !empty($this->meta['pagination']['links']['next']);
     }
 
     /**
@@ -61,6 +108,10 @@ class PaginatedResult
      */
     public function hasPreviousPage()
     {
-        return false;
+        if (isset($this->meta['offset_pagination'])) {
+            return $this->currentPage() > 1;
+        }
+
+        return !empty($this->meta['pagination']['links']['previous']);
     }
 }

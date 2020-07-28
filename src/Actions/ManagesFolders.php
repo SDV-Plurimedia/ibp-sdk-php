@@ -2,7 +2,9 @@
 
 namespace SdV\Ibp\Actions;
 
+use SdV\Ibp\PaginatedResult;
 use SdV\Ibp\Resources\Folder;
+use SdV\Ibp\Resources\File;
 
 trait ManagesFolders
 {
@@ -11,9 +13,14 @@ trait ManagesFolders
      *
      * @return Folder[]
      */
-    public function folders()
+    public function folders(array $query = [])
     {
-        return $this->mapToCollectionOf(Folder::class, $this->get('folders')['data']);
+        $response = $this->get('folders', $query);
+
+        return new PaginatedResult(
+            $this->mapToCollectionOf(Folder::class, $response['data']),
+            $response['meta']
+        );
     }
 
     /**
@@ -26,6 +33,22 @@ trait ManagesFolders
     {
         return new Folder($this->get("folders/$folderId")['data']);
     }
+
+	/**
+	 * Renvoie la liste des fichiers d'un folder.
+	 *
+	 * @param  string $folderId
+	 * @return PaginatedResult
+	 */
+	public function folderFiles($folderId, array $query = [])
+	{
+		$response = $this->get("folders/$folderId/files", $query);
+
+		return new PaginatedResult(
+			$this->mapToCollectionOf(File::class, $response['data']),
+			$response['meta']
+		);
+	}
 
     /**
      * Crée un nouveau folder.

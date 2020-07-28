@@ -2,6 +2,7 @@
 
 namespace SdV\Ibp\Actions;
 
+use SdV\Ibp\PaginatedResult;
 use SdV\Ibp\Resources\Application;
 
 trait ManagesApplications
@@ -11,9 +12,14 @@ trait ManagesApplications
      *
      * @return Application[]
      */
-    public function applications()
+    public function applications(array $query = [])
     {
-        return $this->mapToCollectionOf(Application::class, $this->get('applications')['data']);
+        $response = $this->get('applications', $query);
+
+        return new PaginatedResult(
+            $this->mapToCollectionOf(Application::class, $response['data']),
+            $response['meta']
+        );
     }
 
     /**

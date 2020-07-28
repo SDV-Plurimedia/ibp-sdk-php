@@ -2,6 +2,9 @@
 
 namespace SdV\Ibp\Actions;
 
+use SdV\Ibp\Resources\File;
+use SdV\Ibp\PaginatedResult;
+
 trait ManagesSearch
 {
     /**
@@ -9,8 +12,13 @@ trait ManagesSearch
      *
      * @return PaginatedResult[]
      */
-    public function searchFiles(array $payload = [])
+    public function searchFiles(array $query = [])
     {
-        // TODO
+        $response = $this->get('files/search', $query);
+
+        return new PaginatedResult(
+            $this->mapToCollectionOf(File::class, $response['data']),
+            $response['meta']
+        );
     }
 }

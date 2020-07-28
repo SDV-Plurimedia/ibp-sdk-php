@@ -7,4 +7,6 @@ class Error extends Resource
     public $status;
 
     public $title;
+
+    public $messages;
 }

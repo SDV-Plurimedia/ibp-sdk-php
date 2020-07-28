@@ -24,8 +24,16 @@ class Client
      */
     protected $client;
 
+    /**
+     * The IBP base URI
+     * @var string
+     */
+    protected $baseUri;
+
     public function __construct($baseUri, HttpClient $client = null)
     {
+        $this->baseUri = $baseUri;
+
         $this->client = $client ?: new HttpClient([
             'base_uri' => $baseUri,
             'http_errors' => false,

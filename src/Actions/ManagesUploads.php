@@ -10,16 +10,11 @@ trait ManagesUploads
      * Upload un file.
      *
      * @param  stream $fileContent Le contenu du file.
-     * @param  string $folderId    L'identifiant du folder dans lequel on souhaite ajouter le file.
+     * @param  array $payload    Les données supplémentaires à transmettre.
      * @return File
      */
-    public function uploadFile($fileContent, $folderId = null)
+    public function uploadFile($fileContent, array $payload = [])
     {
-        $payload = [];
-        if (!is_null($folderId)) {
-            $payload = ['folder_id' => $folderId];
-        }
-
         return new File($this->upload('files', $fileContent, $payload)['data']);
     }
 }
