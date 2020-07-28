@@ -134,19 +134,32 @@ trait MakesHttpRequests
     }
 
     /**
+     * Format the error response from IBP.
      * @param  \Psr\Http\Message\ResponseInterface $response
+     * @throws ApiException
      * @return void
      */
     private function handleRequestError(ResponseInterface $response)
     {
-        throw new ApiException(
-            'IBP Api Error',
-            $this->toError($response->getBody())
-        );
+        $title = 'Not a valid json response';
+        $data = json_decode((string) $response->getBody(), true);
+        if (!is_null($data) && isset($data['error']) && isset($data['error']['title'])) {
+            $title = "IBP Api Error : " . $data['error']['title'];
+        }
+        $error = $this->toError($data);
+        throw new ApiException($title, $error);
     }
 
-    private function toError(\GuzzleHttp\Psr7\Stream $stream)
+    private function toError(array $data)
     {
-        return new Error(json_decode((string) $stream, true)['error']);
+        if (!is_null($data) && isset($data['error'])) {
+            return new Error($data['error']);
+        }
+
+        return new Error([
+            'status' => '500',
+            'title' => 'Not a valid json response',
+            'messages' => 'Please check your API at ' . $this->baseUri,
+        ]);
     }
 }

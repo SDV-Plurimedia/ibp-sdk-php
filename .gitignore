@@ -6,3 +6,4 @@ phpunit.xml
 .DS_Store
 Thumbs.db
 test.php
+.idea
