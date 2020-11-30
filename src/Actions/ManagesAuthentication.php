@@ -2,9 +2,9 @@
 
 namespace SdV\Ibp\Actions;
 
-use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
-use SdV\Ibp\Resources\Folder;
+use Lcobucci\JWT\Signer\Key\InMemory;
 
 trait ManagesAuthentication
 {
@@ -95,22 +95,27 @@ trait ManagesAuthentication
      */
     public function uploadToken($email, $lifetime = 120)
     {
-        $time = time();
+        $config = Configuration::forSymmetricSigner(
+            new Sha256(),
+            InMemory::plainText($this->applicationSecret)
+        );
 
-        $token = (new Builder())
-            ->setIssuer($this->applicationId)
-            ->setAudience($this->baseUri)
-            ->setId(sha1($time . bin2hex(random_bytes(5))), true)
-            ->setIssuedAt($time - 2)
-            ->setNotBefore($time - 2)
-            ->setExpiration($time + $lifetime)
-            ->set('sub', $this->applicationId)
-            ->set('application_id', $this->applicationId)
-            ->set('email', $email)
-            ->sign(new Sha256(), $this->applicationSecret)
-            ->getToken();
+        $now = new \DateTimeImmutable();
 
-        return (string) $token;
+        $token = $config
+            ->builder()
+            ->issuedBy($this->applicationId)
+            ->permittedFor($this->baseUri)
+            ->identifiedBy(sha1(time() . bin2hex(random_bytes(5))))
+            ->issuedAt($now->modify('-2 seconds'))
+            ->canOnlyBeUsedAfter($now->modify('-2 seconds'))
+            ->expiresAt($now->modify('+' . $lifetime . ' seconds'))
+            ->relatedTo($this->applicationId)
+            ->withClaim('application_id', $this->applicationId)
+            ->withClaim('email', $email)
+            ->getToken($config->signer(), $config->signingKey());
+
+        return $token->toString();
     }
 
     /**
@@ -121,20 +126,25 @@ trait ManagesAuthentication
      */
     public function applicationToken($lifetime = 120)
     {
-        $time = time();
+        $config = Configuration::forSymmetricSigner(
+            new Sha256(),
+            InMemory::plainText($this->applicationSecret)
+        );
 
-        $token = (new Builder())
-            ->setIssuer($this->applicationId)
-            ->setAudience($this->baseUri) // The audience value is a string -- typically, the base address of the resource being accessed, such as "https://ibp.xxx.fr".
-            ->setId(sha1($time . bin2hex(random_bytes(5))), true)
-            ->setIssuedAt($time - 2)
-            ->setNotBefore($time - 2)
-            ->setExpiration($time + $lifetime)
-            ->set('sub', $this->applicationId)
-            ->set('application_id', $this->applicationId)
-            ->sign(new Sha256(), $this->applicationSecret)
-            ->getToken();
+        $now = new \DateTimeImmutable();
 
-        return (string) $token;
+        $token = $config
+            ->builder()
+            ->issuedBy($this->applicationId)
+            ->permittedFor($this->baseUri)
+            ->identifiedBy(sha1(time() . bin2hex(random_bytes(5))))
+            ->issuedAt($now->modify('-2 seconds'))
+            ->canOnlyBeUsedAfter($now->modify('-2 seconds'))
+            ->expiresAt($now->modify('+' . $lifetime . ' seconds'))
+            ->relatedTo($this->applicationId)
+            ->withClaim('application_id', $this->applicationId)
+            ->getToken($config->signer(), $config->signingKey());
+
+        return $token->toString();
     }
 }
