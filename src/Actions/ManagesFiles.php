@@ -94,15 +94,18 @@ trait ManagesFiles
 
     /**
      * Supprime un fichier d'IBP
-     * @param string $fileId L'id du fichier que l'on souhaite supprimer
+     * @param string $fileId L'id du fichier que l'on souhaite supprimer.
+     * @param boolean $forceDelete Supprime le fichier définitivement.
      * @return boolean
      */
-    public function deleteFile($fileId)
+    public function deleteFile($fileId, $forceDelete = false)
     {
         $payload = [
+            'force_delete' => $forceDelete,
             'data' => [$fileId]
         ];
         $this->delete('files', $payload);
+
         return true;
     }
 }
