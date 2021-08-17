@@ -2,18 +2,16 @@
 
 A PHP client for the IBP API.
 
-Work in progress.
-
 ## Index
 
-* [Installation](#installation)
-* [Usage](#usage)
-* [Authentication](#authentication)
-* [Folders](#folders)
-* [Files](#files)
-* [Application](#application)
-* [Methodes](#methodes)
-* [Pipelines](#pipelines)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Authentication](#authentication)
+- [Folders](#folders)
+- [Files](#files)
+- [Application](#application)
+- [Methodes](#methodes)
+- [Pipelines](#pipelines)
 
 ## Installation
 
@@ -82,7 +80,6 @@ $token = $ibp
     ->setApplicationSecret('app_secret')
     ->uploadToken('john.doe@example.com', 120);
 ```
-
 
 ### Générer un application token
 
