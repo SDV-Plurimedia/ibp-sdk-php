@@ -117,7 +117,8 @@ trait ManagesFiles
      */
     public function setSmartMode($fileId, $value)
     {
-        $this->put("files/$fileId/smart", $value);
+        $payload = ['smart' => $value];
+        $this->put("files/$fileId/smart", $payload);
 
         return true;
     }
