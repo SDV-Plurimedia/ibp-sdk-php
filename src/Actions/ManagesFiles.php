@@ -108,4 +108,17 @@ trait ManagesFiles
 
         return true;
     }
+
+    /**
+     * Active / desactive le mode de detection intelligente de Thumbor pour un fichier
+     * @param string $fileId L'id du fichier que l'on souhaite supprimer.
+     * @param boolean $value
+     * @return boolean
+     */
+    public function setSmartMode($fileId, $value)
+    {
+        $this->put("files/$fileId/smart", $value);
+
+        return true;
+    }
 }

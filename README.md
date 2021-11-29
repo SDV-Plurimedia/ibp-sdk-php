@@ -171,6 +171,12 @@ $file = $ibp->uploadFile($fileContent);
 $ibp->deleteFile('59142cd4a64da6014c769813');
 ```
 
+#### Activer / Desactiver le mode de detection intelligente de Thumbor
+
+```
+$ibp->setSmartMode('59142cd4a64da6014c769813', false);
+```
+
 ### Application
 
 #### Récupérer la liste des applications.
