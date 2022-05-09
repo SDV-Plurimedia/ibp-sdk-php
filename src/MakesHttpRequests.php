@@ -163,7 +163,7 @@ trait MakesHttpRequests
         throw new ApiException($title, $error);
     }
 
-    private function toError(array $data)
+    private function toError(?array $data)
     {
         if (!is_null($data) && isset($data['error'])) {
             return new Error($data['error']);
