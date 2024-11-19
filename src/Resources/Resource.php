@@ -2,6 +2,7 @@
 
 namespace SdV\Ibp\Resources;
 
+#[\AllowDynamicProperties]
 class Resource
 {
     public $attributes;
