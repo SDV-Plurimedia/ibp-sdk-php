@@ -6,36 +6,36 @@ class File extends Resource
 {
     use HasDates;
 
-    public $id;
+    public string $id;
 
-    public $extension;
+    public string $extension;
 
-    public $extensionOriginale;
+    public string $extensionOriginale;
 
-    public $fichierOriginal;
+    public string $fichierOriginal;
 
-    public $path;
+    public string $path;
 
-    public $ibpPath;
+    public string $ibpPath;
 
-    public $size;
+    public int $size;
 
-    public $md5sum;
+    public string $md5sum;
 
-    public $mimeType;
+    public string $mimeType;
 
-    public $extra;
+    public ?array $extra;
 
-    public $methodes;
+    public array $methodes;
 
-    public $meta;
+    public array $meta;
 
-    public $exif;
+    public array $exif;
 
     // Relations
-    public $userId;
+    public string $userId;
 
-    public $applicationId;
+    public string $applicationId;
 
-    public $organizationId;
+    public string $organizationId;
 }

@@ -5,40 +5,34 @@ namespace SdV\Ibp\Actions;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
+use SdV\Ibp\Client;
 
 trait ManagesAuthentication
 {
     /**
      * The application Id
-     * @var string
      */
-    private $applicationId;
+    private string $applicationId;
 
     /**
      * The application Secret
-     * @var string
      */
-    private $applicationSecret;
+    private string $applicationSecret;
 
     /**
      * The application Token
-     * @var string
      */
-    private $applicationToken;
+    private string $applicationToken;
 
     /**
      * The upload Token
-     * @var string
      */
-    private $uploadToken;
+    private string $uploadToken;
 
     /**
      * Initialiase un application Token.
-     *
-     * @param string $applicationId
-     * @return Ibp
      */
-    public function setApplicationId($applicationId)
+    public function setApplicationId(string $applicationId): Client
     {
         $this->applicationId = $applicationId;
 
@@ -47,11 +41,8 @@ trait ManagesAuthentication
 
     /**
      * Initialiase un application secret.
-     *
-     * @param string $applicationSecret
-     * @return Ibp
      */
-    public function setApplicationSecret($applicationSecret)
+    public function setApplicationSecret(string $applicationSecret): Client
     {
         $this->applicationSecret = $applicationSecret;
 
@@ -60,11 +51,8 @@ trait ManagesAuthentication
 
     /**
      * Initialiase un application Token.
-     *
-     * @param string $token
-     * @return Ibp
      */
-    public function setApplicationToken($token)
+    public function setApplicationToken(string $token): Client
     {
         $this->applicationToken = $token;
 
@@ -73,11 +61,8 @@ trait ManagesAuthentication
 
     /**
      * Initialiase un upload Token.
-     *
-     * @param string $token
-     * @return Ibp
      */
-    public function setUploadToken($token)
+    public function setUploadToken(string $token): Client
     {
         $this->uploadToken = $token;
 
@@ -86,14 +71,12 @@ trait ManagesAuthentication
 
     /**
      * Génération d'un token d'upload.
-     *
-     *
      * @param  string  $email
      * @param  string  $audience The audience value is a string -- typically, the base address of the resource being accessed, such as "https://ibp.xxx.fr".
      * @param  integer $lifetime La durée de vie du token.
      * @return string
      */
-    public function uploadToken($email, $lifetime = 120)
+    public function uploadToken(string $email, int $lifetime = 120): string
     {
         $config = Configuration::forSymmetricSigner(
             new Sha256(),
@@ -120,11 +103,9 @@ trait ManagesAuthentication
 
     /**
      * Génération d'un token d'application.
-     *
      * @param  integer $lifetime La durée de vie du token.
-     * @return string
      */
-    public function applicationToken($lifetime = 120)
+    public function applicationToken(int $lifetime = 120): string
     {
         $config = Configuration::forSymmetricSigner(
             new Sha256(),

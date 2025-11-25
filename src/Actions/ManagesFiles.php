@@ -2,7 +2,9 @@
 
 namespace SdV\Ibp\Actions;
 
+use SdV\Ibp\Exceptions\ApiException;
 use SdV\Ibp\PaginatedResult;
+use SdV\Ibp\Resources\Error;
 use SdV\Ibp\Resources\File;
 
 trait ManagesFiles
@@ -12,7 +14,7 @@ trait ManagesFiles
      *
      * @return File[]
      */
-    public function files(array $query = [])
+    public function files(array $query = []): PaginatedResult
     {
         $response = $this->get('files', $query);
 
@@ -28,7 +30,7 @@ trait ManagesFiles
      * @param  string $fileId
      * @return File
      */
-    public function file($fileId)
+    public function file(string $fileId): File
     {
         return new File($this->get("files/$fileId")['data']);
     }
@@ -41,7 +43,7 @@ trait ManagesFiles
      * @param  array|null $tags Les tags à ajouter au fichier (Utilisé uniquement par le service "manual")
      * @return File
      */
-    public function tagFile($fileId, $service, $tags = null)
+    public function tagFile(string $fileId, string $service, ?array $tags = null): File
     {
         $payload = ['service' => $service];
 
@@ -59,7 +61,7 @@ trait ManagesFiles
      * @param  array $data Les données à ajouter ou mettre à jour
      * @return File
      */
-    public function putExtras($fileId, $data)
+    public function putExtras($fileId, $data): File
     {
         $payload = [
             'extra' => $data,
@@ -75,7 +77,7 @@ trait ManagesFiles
      * @param  array $payload
      * @return File
      */
-    public function upsertMethodeOnFile($fileId, $payload)
+    public function upsertMethodeOnFile($fileId, $payload): File
     {
         return new File($this->put("files/$fileId/methodes", $payload)['data']);
     }
@@ -87,7 +89,7 @@ trait ManagesFiles
      * @param  string $context Le context de la méthode.
      * @return File
      */
-    public function deleteMethodeFromFile($fileId, $context)
+    public function deleteMethodeFromFile(string $fileId, string $context): File
     {
         return new File($this->delete("files/$fileId/methodes/$context")['data']);
     }
@@ -98,13 +100,21 @@ trait ManagesFiles
      * @param boolean $forceDelete Supprime le fichier définitivement.
      * @return boolean
      */
-    public function deleteFile($fileId, $forceDelete = false)
+    public function deleteFile(string $fileId, bool $forceDelete = false): bool
     {
         $payload = [
             'force_delete' => $forceDelete,
             'data' => [$fileId]
         ];
-        $this->delete('files', $payload);
+        $response = $this->delete('files', $payload);
+
+        if (array_key_exists('errors', $response['data']) && !empty($response['data']['errors'])) {
+            throw new ApiException('Cannot delete file ' . $fileId, new Error([
+                'title' => $response['data']['errors'][0]['title'],
+                'messages' => $response['data']['errors'][0]['message'],
+                'status' => 500
+            ]));
+        }
 
         return true;
     }
@@ -115,10 +125,11 @@ trait ManagesFiles
      * @param boolean $value
      * @return boolean
      */
-    public function setSmartMode($fileId, $value)
+    public function setSmartMode(string $fileId, bool $value): bool
     {
-        $payload = ['smart' => $value];
-        $this->put("files/$fileId/smart", $payload);
+        $this->put("files/$fileId/smart", [
+            'smart' => $value,
+        ]);
 
         return true;
     }

@@ -9,10 +9,8 @@ trait ManagesPipelines
 {
     /**
      * Renvoie la liste des pipelines.
-     *
-     * @return Pipeline[]
      */
-    public function pipelines(array $query = [])
+    public function pipelines(array $query = []): PaginatedResult
     {
         $response = $this->get('pipelines', $query);
 

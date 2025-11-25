@@ -4,9 +4,9 @@ namespace SdV\Ibp\Resources;
 
 class Error extends Resource
 {
-    public $status;
+    public int $status;
 
-    public $title;
+    public string $title;
 
-    public $messages;
+    public string $messages;
 }

@@ -6,9 +6,9 @@ class Application extends Resource
 {
     use HasDates;
 
-    public $id;
+    public string $id;
 
-    public $name;
+    public string $name;
 
-    public $description;
+    public string $description;
 }
