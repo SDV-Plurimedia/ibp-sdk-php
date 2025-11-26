@@ -106,15 +106,8 @@ trait ManagesFiles
             'force_delete' => $forceDelete,
             'data' => [$fileId]
         ];
-        $response = $this->delete('files', $payload);
 
-        if (array_key_exists('errors', $response['data']) && !empty($response['data']['errors'])) {
-            throw new ApiException($response['data']['errors'][0], new Error([
-                'title' => $response['data']['errors'][0],
-                'messages' => $response['data']['errors'][0],
-                'status' => 500
-            ]));
-        }
+        $this->delete('files', $payload);
 
         return true;
     }
