@@ -6,16 +6,16 @@ class Folder extends Resource
 {
     use HasDates;
 
-    public $id;
+    public string $id;
 
-    public $name;
+    public string $name;
 
-    public $color;
+    public ?string $color;
 
-    public $filesCount;
+    public ?int $filesCount;
 
     // Relations
-    public $applicationId;
+    public string $applicationId;
 
-    public $organizationId;
+    public string $organizationId;
 }

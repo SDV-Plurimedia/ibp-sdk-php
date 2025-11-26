@@ -4,13 +4,13 @@ namespace SdV\Ibp\Resources;
 
 class Pipeline extends Resource
 {
-    public $id;
+    public string $id;
 
-    public $context;
+    public string $context;
 
-    public $methodes;
+    public array $methodes;
 
-    public $param;
+    public array $param;
 
-    public $organizationId;
+    public string $organizationId;
 }

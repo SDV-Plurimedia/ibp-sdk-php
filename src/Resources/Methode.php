@@ -4,13 +4,13 @@ namespace SdV\Ibp\Resources;
 
 class Methode extends Resource
 {
-    public $id;
+    public string $id;
 
-    public $context;
+    public string $context;
 
-    public $generator;
+    public string $generator;
 
-    public $param;
+    public array $param;
 
-    public $organizationId;
+    public string $organizationId;
 }

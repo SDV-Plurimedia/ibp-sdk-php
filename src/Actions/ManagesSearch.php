@@ -9,10 +9,8 @@ trait ManagesSearch
 {
     /**
      * Renvoie la liste des files.
-     *
-     * @return PaginatedResult[]
      */
-    public function searchFiles(array $query = [])
+    public function searchFiles(array $query = []): PaginatedResult
     {
         $response = $this->get('files/search', $query);
 

@@ -12,7 +12,7 @@ trait ManagesApplications
      *
      * @return Application[]
      */
-    public function applications(array $query = [])
+    public function applications(array $query = []): PaginatedResult
     {
         $response = $this->get('applications', $query);
 
@@ -28,7 +28,7 @@ trait ManagesApplications
      * @param  string $applicationId
      * @return Application
      */
-    public function application($applicationId)
+    public function application(string $applicationId): Application
     {
         return new Application($this->get("applications/$applicationId")['data']);
     }
@@ -40,7 +40,7 @@ trait ManagesApplications
      * @param  string $description La description de l'application.
      * @return Application
      */
-    public function createApplication($name, $description)
+    public function createApplication(string $name, string $description): Application
     {
         return new Application($this->post("applications", [
             'name' => $name,
@@ -56,7 +56,7 @@ trait ManagesApplications
      * @param  string $description La description de l'application.
      * @return Application
      */
-    public function updateApplication($applicationId, $name, $description)
+    public function updateApplication(string $applicationId, string $name, string $description): Application
     {
         return new Application($this->put("applications/$applicationId", [
             'name' => $name,
@@ -70,7 +70,7 @@ trait ManagesApplications
      * @param  string $applicationId L'identifiant de l'application à supprimer.
      * @return boolean|Exception
      */
-    public function deleteApplication($applicationId)
+    public function deleteApplication(string $applicationId): bool
     {
         $this->delete("applications/$applicationId");
 

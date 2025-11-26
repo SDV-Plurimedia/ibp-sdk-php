@@ -16,21 +16,9 @@ class Client
         Actions\ManagesUploads,
         Actions\ManagesSearch;
 
-    /**
-     * The Guzzle HTTP Client instance.
-     *
-     * @param string     $baseUri
-     * @param HttpClient $client
-     */
-    protected $client;
+    protected string $baseUri;
 
-    /**
-     * The IBP base URI
-     * @var string
-     */
-    protected $baseUri;
-
-    public function __construct($baseUri, HttpClient $client = null)
+    public function __construct($baseUri, protected ?HttpClient $client = null)
     {
         $this->baseUri = $baseUri;
 
@@ -42,14 +30,12 @@ class Client
 
     /**
      * Transforme une réponse IBP contenant une liste de models en array.
-     *
-     * @param  Resource $class
      * @param  array $data
      * @return array
      */
-    protected function mapToCollectionOf($class, $data)
+    protected function mapToCollectionOf(string $class, array $data): array
     {
-        return array_map(function ($attributes) use ($class) {
+        return array_map(function (array $attributes) use ($class) {
             return new $class($attributes);
         }, $data);
     }

@@ -2,18 +2,13 @@
 
 namespace SdV\Ibp;
 use InvalidArgumentException;
+use SdV\Ibp\Resources\Resource;
 
 class PaginatedResult
 {
-    /**
-     * @var SdV\Ibp\Resource
-     */
-    public $items;
+    public Resource $items;
 
-    /**
-     * @var array
-     */
-    public $meta;
+    public array $meta;
 
     public function __construct($items, $meta)
     {
@@ -27,7 +22,7 @@ class PaginatedResult
      * @throws InvalidArgumentException
      * @return int
      */
-    public function currentPage()
+    public function currentPage(): int
     {
         if (isset($this->meta['offset_pagination'])) {
             if ($this->meta['offset_pagination']['size']) {
@@ -50,7 +45,7 @@ class PaginatedResult
      *
      * @return int
      */
-    public function totalPages()
+    public function totalPages(): int
     {
         if (isset($this->meta['offset_pagination'])) {
             return ceil($this->total() / $this->perPage());
@@ -64,7 +59,7 @@ class PaginatedResult
      *
      * @return int
      */
-    public function total()
+    public function total(): int
     {
         if (isset($this->meta['offset_pagination'])) {
             return $this->meta['offset_pagination']['total'];
@@ -78,7 +73,7 @@ class PaginatedResult
      *
      * @return int
      */
-    public function perPage()
+    public function perPage(): int
     {
         if (isset($this->meta['offset_pagination'])) {
             return $this->meta['offset_pagination']['size'];
@@ -92,7 +87,7 @@ class PaginatedResult
      *
      * @return boolean
      */
-    public function hasNextPage()
+    public function hasNextPage(): bool
     {
         if (isset($this->meta['offset_pagination'])) {
             return $this->currentPage() < $this->totalPages();
@@ -106,7 +101,7 @@ class PaginatedResult
      *
      * @return boolean
      */
-    public function hasPreviousPage()
+    public function hasPreviousPage(): bool
     {
         if (isset($this->meta['offset_pagination'])) {
             return $this->currentPage() > 1;

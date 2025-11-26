@@ -14,7 +14,7 @@ trait MakesHttpRequests
      * @param  string $uri
      * @return mixed
      */
-    private function get($uri, array $query = [])
+    private function get(string $uri, array $query = [])
     {
         return $this->request('GET', $uri, $query);
     }
@@ -26,7 +26,7 @@ trait MakesHttpRequests
      * @param  array $payload
      * @return mixed
      */
-    private function post($uri, array $payload = [])
+    private function post(string $uri, array $payload = [])
     {
         return $this->request('POST', $uri, $payload);
     }
@@ -38,7 +38,7 @@ trait MakesHttpRequests
      * @param  array $payload
      * @return mixed
      */
-    private function put($uri, array $payload = [])
+    private function put(string $uri, array $payload = [])
     {
         return $this->request('PUT', $uri, $payload);
     }
@@ -50,7 +50,7 @@ trait MakesHttpRequests
      * @param  array $payload
      * @return mixed
      */
-    private function delete($uri, array $payload = [])
+    private function delete(string $uri, array $payload = [])
     {
         return $this->request('DELETE', $uri, $payload);
     }
@@ -63,7 +63,7 @@ trait MakesHttpRequests
      * @param  array $payload
      * @return mixed
      */
-    private function upload($uri, $contents, array $payload = [])
+    private function upload(string $uri, $contents, array $payload = [])
     {
         $params = [
             'headers' => [
@@ -111,7 +111,7 @@ trait MakesHttpRequests
      * @param  array $payload
      * @return mixed
      */
-    private function request($verb, $uri, array $payload = [])
+    private function request(string $verb, string $uri, array $payload = [])
     {
         $params = [
             'headers' => [

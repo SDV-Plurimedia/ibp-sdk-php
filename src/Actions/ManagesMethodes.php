@@ -9,10 +9,8 @@ trait ManagesMethodes
 {
     /**
      * Renvoie la liste des methodes.
-     *
-     * @return Methode[]
      */
-    public function methodes(array $query = [])
+    public function methodes(array $query = []): PaginatedResult
     {
         $response = $this->get('methodes', $query);
 
@@ -24,34 +22,24 @@ trait ManagesMethodes
 
     /**
      * Renvoie une methode.
-     *
-     * @param  string $folderId
-     * @return Folder
      */
-    public function methode($methodeId)
+    public function methode(string $methodeId): Methode
     {
         return new Methode($this->get("methodes/$methodeId")['data']);
     }
 
     /**
-     * Création d'un méthode.
-     *
-     * @param  array  $payload
-     * @return Methode
+     * Création d'une méthode.
      */
-    public function createMethode(array $payload)
+    public function createMethode(array $payload): Methode
     {
         return new Methode($this->post('methodes', $payload)['data']);
     }
 
     /**
      * Met à jour une methode.
-     *
-     * @param  string $methodeId L'identifiant de la methode.
-     * @param  array  $payload.
-     * @return Methode
      */
-    public function updateMethode($methodeId, array $payload)
+    public function updateMethode(string $methodeId, array $payload): Methode
     {
         $response = $this->put("methodes/$methodeId", $payload);
 
@@ -60,11 +48,8 @@ trait ManagesMethodes
 
     /**
      * Supprimer une methode.
-     *
-     * @param  string $methodeId L'identifiant de la methode à supprimer.
-     * @return boolean|Exception
      */
-    public function deleteMethode($methodeId)
+    public function deleteMethode(string $methodeId): bool
     {
         $this->delete("methodes/$methodeId");
 

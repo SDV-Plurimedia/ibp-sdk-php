@@ -5,14 +5,12 @@ namespace SdV\Ibp\Resources;
 #[\AllowDynamicProperties]
 class Resource
 {
-    public $attributes;
+    public array $attributes;
 
     /**
      * Create a new resource instance.
      *
      * @param  array $attributes
-     * @param  Forge $forge
-     * @return void
      */
     public function __construct(array $attributes)
     {
@@ -26,7 +24,7 @@ class Resource
      *
      * @return void
      */
-    private function fill()
+    private function fill(): void
     {
         foreach ($this->attributes as $key => $value) {
             $key = $this->camelCase($key);
@@ -39,7 +37,7 @@ class Resource
      *
      * @param $key
      */
-    private function camelCase($key)
+    private function camelCase(string $key): string
     {
         $parts = explode('_', $key);
         foreach ($parts as $i => $part) {

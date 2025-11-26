@@ -4,7 +4,7 @@ namespace SdV\Ibp\Resources;
 
 trait HasDates
 {
-    public $createdAt;
+    public string $createdAt;
 
-    public $updatedAt;
+    public string $updatedAt;
 }

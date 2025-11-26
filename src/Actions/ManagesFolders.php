@@ -10,10 +10,8 @@ trait ManagesFolders
 {
     /**
      * Renvoie la liste des folders.
-     *
-     * @return Folder[]
      */
-    public function folders(array $query = [])
+    public function folders(array $query = []): PaginatedResult
     {
         $response = $this->get('folders', $query);
 
@@ -25,22 +23,16 @@ trait ManagesFolders
 
     /**
      * Renvoie un folder.
-     *
-     * @param  string $folderId
-     * @return Folder
      */
-    public function folder($folderId)
+    public function folder(string $folderId): Folder
     {
         return new Folder($this->get("folders/$folderId")['data']);
     }
 
 	/**
 	 * Renvoie la liste des fichiers d'un folder.
-	 *
-	 * @param  string $folderId
-	 * @return PaginatedResult
 	 */
-	public function folderFiles($folderId, array $query = [])
+	public function folderFiles(string $folderId, array $query = []): PaginatedResult
 	{
 		$response = $this->get("folders/$folderId/files", $query);
 
@@ -52,23 +44,16 @@ trait ManagesFolders
 
     /**
      * Crée un nouveau folder.
-     *
-     * @param  string $name Le nom du folder.
-     * @return Folder
      */
-    public function createFolder($name)
+    public function createFolder(string $name): Folder
     {
         return new Folder($this->post('folders', ['name' => $name])['data']);
     }
 
     /**
      * Met à jour un folder.
-     *
-     * @param  string $folderId L'identifiant du folder.
-     * @param  string $name Le nouveau nom du folder.
-     * @return Folder
      */
-    public function updateFolder($folderId, $name)
+    public function updateFolder(string $folderId, string $name): Folder
     {
         $response = $this->put("folders/$folderId", ['name' => $name]);
 
@@ -77,11 +62,8 @@ trait ManagesFolders
 
     /**
      * Ajoute un file dans un folder.
-     *
-     * @param  string $folderId L'identifiant du folder.
-     * @param  string $fileId L'identifiant du file.
      */
-    public function addFileInFolder($folderId, $fileId)
+    public function addFileInFolder(string $folderId, string $fileId): Folder
     {
         $response = $this->post("folders/$folderId/files", [
             'file_id' => $fileId,
@@ -92,12 +74,8 @@ trait ManagesFolders
 
     /**
      * Enleve un file du folder.
-     *
-     * @param  string $folderId L'identifiant du folder.
-     * @param  string $fileId L'identifiant du file.
-     * @return boolean|Exception
      */
-    public function removeFileFromFolder($folderId, $fileId)
+    public function removeFileFromFolder(string $folderId, string $fileId): bool
     {
         $this->delete("folders/$folderId/files/$fileId");
 
